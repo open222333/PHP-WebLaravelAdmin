@@ -1,0 +1,31 @@
+version: '3'
+services:
+  php-fpm:
+    build: ./code
+    container_name: php-fpm
+    image: php:fpm
+    volumes:
+      - ./code:/var/www/html/
+  nginx:
+    container_name: nginx
+    image: nginx
+    volumes:
+      - ./code:/var/www/html/
+      - ./config/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - php-fpm
+  mysql:
+    container_name: mysql_php
+    hostname: mysql-container
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./log/mysql:/var/log/mysql
+      - ./conf/mysql:/etc/mysql/conf.d
