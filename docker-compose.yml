@@ -3,7 +3,7 @@ services:
   php-fpm:
     build: ./code
     container_name: php-fpm
-    image: php:fpm
+    image: php:7.4-fpm
     volumes:
       - ./code:/var/www/html/
   nginx:

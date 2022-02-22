@@ -27,5 +27,5 @@ else
 	cd ..
 	cp .env.example code/.env
 	cp Dockerfile code/Dockerfile
-	sh setup_laravel_admin.sh
+	docker-compose up -d
 fi
