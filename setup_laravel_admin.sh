@@ -10,22 +10,24 @@ path=`cd $(dirname $0);pwd -P`
 if [ -d "$path/code" ]
 then
 	# mysql 需先建立好資料庫
-	echo "安裝laravel-admin"
-	cd code
-	php artisan admin:install
+	echo "laravel-admin"
+	docker-compose up -d
+	# cd code
+	# php artisan admin:install
 else
 	# 建立laravel專案 php 7.4
 	mkdir code
 	composer create-project --prefer-dist laravel/laravel  "code" 6.*
 
-	# 安裝laravel-admin前置準備
-	cd code
-	composer require encore/laravel-admin
-	php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
+	# # 安裝laravel-admin前置準備
+	# cd code
+	# composer require encore/laravel-admin
+	# php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
 
 	# 複製.env 並在執行一次
-	cd ..
+	# cd ..
 	cp .env.example code/.env
 	cp Dockerfile code/Dockerfile
+	docker-compose build
 	docker-compose up -d
 fi

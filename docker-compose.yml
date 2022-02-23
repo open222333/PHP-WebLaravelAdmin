@@ -6,6 +6,8 @@ services:
     image: php:7.4-fpm
     volumes:
       - ./code:/var/www/html/
+    networks:
+      - la-network
   nginx:
     container_name: nginx
     image: nginx
@@ -17,8 +19,10 @@ services:
       - 443:443
     links:
       - php-fpm
+    networks:
+      - la-network
   mysql:
-    container_name: mysql_php
+    container_name: mysql
     hostname: mysql-container
     image: mysql:5.7
     ports:
@@ -30,3 +34,9 @@ services:
       - ./data/mysql:/var/lib/mysql
       - ./log/mysql:/var/log/mysql
       - ./conf/mysql:/etc/mysql/conf.d
+    networks:
+      - la-network
+
+networks:
+  la-network:
+    driver: bridge

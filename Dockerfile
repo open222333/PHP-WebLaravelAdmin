@@ -41,6 +41,17 @@ RUN chown -R www-data:www-data \
 	/var/www/html/storage \
 	/var/www/html/bootstrap/cache
 
+# 安裝 composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php
+RUN mv composer.phar /usr/bin/composer
+RUN php -r "unlink('composer-setup.php');"
+
+# 安裝 laravel-admin 套件
+RUN composer require encore/laravel-admin
+RUN	php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
+RUN php artisan admin:install
+
 # Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
 EXPOSE 9000
 CMD ["php-fpm"]
