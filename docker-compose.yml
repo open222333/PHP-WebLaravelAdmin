@@ -1,15 +1,17 @@
 version: '3'
 services:
-  php-fpm:
+  php_fpm_laravel_admin:
     build: ./code
-    container_name: php-fpm
+    container_name: php_fpm_laravel_admin
     image: php:7.4-fpm
     volumes:
       - ./code:/var/www/html/
     networks:
       - la-network
-  nginx:
-    container_name: nginx
+    depends_on:
+      - mysql_laravel_admin
+  nginx_laravel_admin:
+    container_name: nginx_laravel_admin
     image: nginx
     volumes:
       - ./code:/var/www/html/
@@ -18,13 +20,14 @@ services:
       - 80:80
       - 443:443
     links:
-      - php-fpm
+      - php_fpm_laravel_admin
     networks:
       - la-network
-  mysql:
-    container_name: mysql
+  mysql_laravel_admin:
+    container_name: mysql_laravel_admin
     hostname: mysql-container
     image: mysql:5.7
+    platform: linux/amd64 # 給M1晶片使用
     ports:
       - 3306:3306
     environment:
